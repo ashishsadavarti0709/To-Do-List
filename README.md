@@ -57,11 +57,11 @@ To run this project locally, follow these simple steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/advanced-todo-list.git](https://github.com/your-username/advanced-todo-list.git)
+    git clone https://github.com/ashishsadavarti0709/To-Do-List-Using-HTML-CSS-JavaScript
     ```
 2.  **Navigate to the project directory:**
     ```bash
-    cd advanced-todo-list
+    cd todo-list
     ```
 3.  **Open `index.html`:**
     Open the `index.html` file in your preferred web browser. All necessary CSS and JavaScript files are linked relative to the HTML file.
