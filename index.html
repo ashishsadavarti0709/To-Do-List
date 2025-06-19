@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced To-Do List</title>
+    <!-- Link to the main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Link to Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Dark/Light Mode Toggle Button -->
+    <!-- Positioned fixed for easy access regardless of scroll position -->
+    <div class="theme-toggle">
+        <button id="theme-switcher" aria-label="Toggle dark mode">
+            <!-- Icon will change between moon and sun based on the theme -->
+            <i class="fas fa-moon"></i> 
+        </button>
+    </div>
+
+    <!-- Main Application Container -->
+    <!-- This div wraps all primary content, helping with layout and global styling -->
+    <div class="app-container">
+        <!-- Header Section -->
+        <header class="app-header">
+            <h1>My To-Do List</h1>
+            <p>Organize your tasks efficiently</p>
+        </header>
+
+        <!-- Task Input Section -->
+        <!-- Form for adding new tasks with various details -->
+        <section class="task-input-section">
+            <form id="task-form">
+                <!-- Input field for the main task description and add button -->
+                <div class="input-group">
+                    <input type="text" id="task-input" placeholder="Add a new task..." aria-label="Task input" required>
+                    <button type="submit" class="add-btn" aria-label="Add task">
+                        <i class="fas fa-plus"></i> <!-- Plus icon for adding -->
+                    </button>
+                </div>
+                
+                <!-- Additional options for new tasks: category, priority, due date -->
+                <div class="task-options">
+                    <select id="task-category" aria-label="Task category">
+                        <option value="personal">Personal</option>
+                        <option value="work">Work</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="other">Other</option>
+                    </select>
+                    
+                    <select id="task-priority" aria-label="Task priority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                    
+                    <input type="date" id="task-due-date" aria-label="Task due date">
+                </div>
+            </form>
+        </section>
+
+        <!-- Task Filter Section -->
+        <!-- Buttons to filter the displayed tasks (All, Today, Upcoming, Completed) -->
+        <section class="task-filter">
+            <button class="filter-btn active" data-filter="all">All Tasks</button>
+            <button class="filter-btn" data-filter="today">Today</button>
+            <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+        </section>
+
+        <!-- Task Statistics Section -->
+        <!-- Displays counts for total, completed, and pending tasks -->
+        <section class="task-stats">
+            <div class="stat-card">
+                <span id="total-tasks">0</span>
+                <span>Total</span>
+            </div>
+            <div class="stat-card">
+                <span id="completed-tasks">0</span>
+                <span>Completed</span>
+            </div>
+            <div class="stat-card">
+                <span id="pending-tasks">0</span>
+                <span>Pending</span>
+            </div>
+        </section>
+
+        <!-- Main Task List Container -->
+        <!-- This is where the individual task items will be dynamically inserted by JavaScript -->
+        <main class="task-list-container">
+            <ul id="task-list" class="task-list">
+                <!-- Task items will be dynamically inserted here -->
+            </ul>
+            
+            <!-- Visual Drag and Drop Placeholder -->
+            <!-- A non-functional visual cue to suggest drag-and-drop capability -->
+            <div class="drag-drop-placeholder">
+                <i class="fas fa-arrows-alt"></i> <!-- Arrows icon -->
+                <p>Drag and drop tasks to reorder</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="app-footer">
+        <!-- Name: Ashish Sadavarti -->
+        <!-- Project Name: Advanced To-Do List -->
+        <!-- Date: 2025 -->
+        <!-- Copyright reserved -->
+        <p>© 2025 Ashish Sadavarti. All rights reserved.</p>
+    </footer>
+
+    <!-- Link to the main JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>

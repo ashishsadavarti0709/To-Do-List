@@ -1,0 +1,551 @@
+/* * Project: Advanced To-Do List
+* Name: Ashish Sadavarti
+* Date: 2025
+* Copyright reserved
+*
+* Features: Creative, responsive, attractive design with validations,
+* gradient and soft color shades, micro-interactions, and accessibility.
+*/
+
+/* Base Styles & Variables */
+/* Define custom properties (CSS variables) for easy theme switching and consistency */
+:root {
+    /* Light Theme Colors */
+    --primary-color: #6c5ce7; /* Main accent color (e.g., buttons, titles) */
+    --secondary-color: #a29bfe; /* Secondary accent color (e.g., hover states) */
+    --accent-color: #fd79a8; /* Another vibrant accent */
+    --background-color: #f9f9f9; /* Overall page background */
+    --card-color: #ffffff; /* Background for cards and main sections */
+    --text-color: #2d3436; /* Dark text for readability */
+    --text-light: #636e72; /* Lighter text for secondary information */
+    --border-color: #dfe6e9; /* Light border color */
+    --success-color: #00b894; /* Color for successful actions (e.g., completed tasks) */
+    --warning-color: #fdcb6e; /* Color for warnings/medium priority */
+    --danger-color: #d63031; /* Color for deletions/urgent priority/overdue */
+    --info-color: #0984e3; /* Color for informational/low priority */
+    
+    /* Spacing Units - Consistent padding and margins */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border Radii - Consistent rounded corners */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-circle: 50%;
+    
+    /* Shadows - Subtle depth effects */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+    
+    /* Transitions - Smooth animations for UI changes */
+    --transition-fast: 0.2s;
+    --transition-normal: 0.3s;
+    --transition-slow: 0.5s;
+}
+
+/* Dark Theme Variables */
+/* These variables override the light theme ones when data-theme="dark" is set on the HTML element */
+[data-theme="dark"] {
+    --primary-color: #a29bfe;
+    --secondary-color: #6c5ce7;
+    --background-color: #2d3436;
+    --card-color: #3a4042;
+    --text-color: #f9f9f9;
+    --text-light: #b2bec3;
+    --border-color: #636e72;
+}
+
+/* Base Styles */
+/* Universal box-sizing and reset for margins/paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling: font, background, text color, smooth transitions, and flex for sticky footer */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Allows footer to stick to bottom */
+}
+
+/* Theme Toggle Button Styling */
+.theme-toggle {
+    position: fixed; /* Stays in place when scrolling */
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 100; /* Ensures it's on top of other content */
+}
+
+#theme-switcher {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-circle); /* Makes it a perfect circle */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast), background var(--transition-normal); /* Micro-interaction: scale and background change */
+}
+
+#theme-switcher:hover {
+    transform: scale(1.1); /* Enlarges slightly on hover */
+    background: var(--secondary-color); /* Changes background color on hover */
+}
+
+/* Main App Container Styling */
+.app-container {
+    max-width: 800px; /* Limits overall width for readability */
+    margin: var(--spacing-xl) auto; /* Centers the container horizontally */
+    padding: 0 var(--spacing-md); /* Adds horizontal padding for smaller screens */
+    width: 100%; /* Ensures it takes full width on small screens */
+    flex: 1; /* Allows it to grow and push footer down */
+}
+
+/* Header Styles */
+.app-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.app-header h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.app-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+/* Task Input Section Styling */
+.task-input-section {
+    margin-bottom: var(--spacing-lg);
+    background: var(--card-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-normal); /* Smooth shadow transition */
+}
+
+.task-input-section:hover {
+    box-shadow: var(--shadow-md); /* Enhances shadow on hover */
+}
+
+.input-group {
+    display: flex; /* Aligns input and button horizontally */
+    margin-bottom: var(--spacing-sm);
+}
+
+#task-input {
+    flex: 1; /* Makes input take up available space */
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm); /* Rounded only on left */
+    font-size: 1rem;
+    transition: border-color var(--transition-fast);
+    background-color: var(--card-color); /* Ensure input background matches card */
+    color: var(--text-color); /* Ensure input text color matches theme */
+}
+
+#task-input:focus {
+    outline: none;
+    border-color: var(--primary-color); /* Highlight border on focus */
+}
+
+.add-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0; /* Rounded only on right */
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.add-btn:hover {
+    background: var(--secondary-color); /* Changes background on hover */
+}
+
+/* Task Options (Category, Priority, Due Date) Styling */
+.task-options {
+    display: flex;
+    gap: var(--spacing-sm); /* Space between options */
+    flex-wrap: wrap; /* Allows options to wrap to next line on smaller screens */
+}
+
+.task-options select, 
+.task-options input {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    background: var(--card-color); /* Ensure background matches card */
+    color: var(--text-color); /* Ensure text color matches theme */
+    transition: border-color var(--transition-fast);
+}
+
+.task-options select:focus, 
+.task-options input:focus {
+    outline: none;
+    border-color: var(--primary-color); /* Highlight border on focus */
+}
+
+/* Task Filter Section Styling */
+.task-filter {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    justify-content: center; /* Centers filter buttons */
+}
+
+.filter-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast); /* Smooth transition for all properties */
+    font-size: 0.9rem;
+    color: var(--text-color); /* Default text color for buttons */
+}
+
+.filter-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Task Statistics Section Styling */
+.task-stats {
+    display: flex;
+    justify-content: space-around; /* Distributes stat cards evenly */
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: var(--card-color);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    min-width: 100px; /* Ensures a minimum width for each card */
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast); /* Micro-interaction: subtle lift on hover */
+}
+
+.stat-card:hover {
+    transform: translateY(-3px); /* Lifts the card on hover */
+}
+
+.stat-card span:first-child {
+    display: block; /* Ensures the number is on its own line */
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color); /* Highlight the count */
+}
+
+.stat-card span:last-child {
+    font-size: 0.9rem;
+    color: var(--text-light); /* Lighter text for the label */
+}
+
+/* Task List Section Styling */
+.task-list-container {
+    margin-bottom: var(--spacing-xl);
+}
+
+.task-list {
+    list-style: none; /* Removes default bullet points */
+    display: flex;
+    flex-direction: column; /* Stacks tasks vertically */
+    gap: var(--spacing-sm); /* Space between task items */
+}
+
+.task-item {
+    background: var(--card-color);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    display: flex; /* Uses flexbox for horizontal alignment within each task item */
+    align-items: center; /* Vertically aligns items in the middle */
+    gap: var(--spacing-sm); /* Space between elements in task item */
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal); /* Smooth transitions for hover effects */
+    position: relative; /* Needed for any absolute positioning inside if desired */
+}
+
+.task-item:hover {
+    box-shadow: var(--shadow-md); /* Enhances shadow on hover */
+    transform: translateY(-2px); /* Lifts the card slightly on hover */
+}
+
+/* Custom Checkbox Styling */
+.task-checkbox {
+    appearance: none; /* Removes default browser styling */
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast); /* Smooth transition for checked state */
+}
+
+.task-checkbox:checked {
+    background: var(--success-color); /* Green background when checked */
+    border-color: var(--success-color);
+}
+
+.task-checkbox:checked::after {
+    content: '\2713'; /* Unicode checkmark character */
+    color: white;
+    font-size: 12px;
+}
+
+/* Task Text Styling */
+.task-text {
+    flex: 1; /* Allows text to take up remaining space */
+    word-break: break-word; /* Prevents long words from overflowing */
+}
+
+/* Completed Task Visuals */
+.task-item.completed .task-text {
+    text-decoration: line-through; /* Strike-through for completed tasks */
+    color: var(--text-light); /* Faded color */
+    opacity: 0.7; /* Slight transparency */
+}
+
+/* Task Category Badge */
+.task-category {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px; /* Pill-shaped badge */
+    background: var(--secondary-color); /* Category color */
+    color: white;
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+
+/* Task Priority Indicator (colored circle) */
+.task-priority {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--border-radius-circle);
+    flex-shrink: 0; /* Prevents it from shrinking on smaller screens */
+}
+
+/* Specific colors for each priority level */
+.task-priority.low {
+    background: var(--info-color);
+}
+
+.task-priority.medium {
+    background: var(--warning-color);
+}
+
+.task-priority.high {
+    background: var(--accent-color);
+}
+
+.task-priority.urgent {
+    background: var(--danger-color);
+}
+
+/* Task Due Date Styling */
+.task-due-date {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-left: auto; /* Pushes the due date to the right */
+    white-space: nowrap; /* Prevents date from wrapping */
+}
+
+.task-due-date.overdue {
+    color: var(--danger-color); /* Red color for overdue tasks */
+    font-weight: bold;
+}
+
+/* Task Actions (Edit, Delete buttons) */
+.task-actions {
+    display: flex;
+    gap: var(--spacing-xs); /* Space between action buttons */
+    flex-shrink: 0; /* Prevents action buttons from shrinking */
+}
+
+.task-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-circle); /* Makes buttons circular */
+}
+
+.task-btn:hover {
+    color: var(--primary-color); /* Changes icon color on hover */
+    background: rgba(0, 0, 0, 0.05); /* Adds a subtle background on hover */
+}
+
+/* Drag and Drop Placeholder (Visual Only) */
+.drag-drop-placeholder {
+    text-align: center;
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    background: var(--card-color);
+    border: 2px dashed var(--border-color); /* Dashed border for visual cue */
+    border-radius: var(--border-radius-md);
+    color: var(--text-light);
+    opacity: 0.7; /* Slightly faded */
+}
+
+.drag-drop-placeholder i {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--primary-color);
+}
+
+/* Empty Message for Task List */
+.empty-message {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--text-light);
+    font-style: italic;
+    background: var(--card-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Footer Styling */
+.app-footer {
+    text-align: center;
+    padding: var(--spacing-md);
+    color: var(--text-light);
+    font-size: 0.9rem;
+    background: var(--card-color);
+}
+
+/* Responsive Design - Media Queries */
+
+/* Styles for screens up to 768px (e.g., tablets and smaller) */
+@media (max-width: 768px) {
+    .app-container {
+        margin: var(--spacing-md) auto; /* Reduce top/bottom margin */
+    }
+    
+    .app-header h1 {
+        font-size: 2rem; /* Smaller header title */
+    }
+    
+    .task-options {
+        flex-direction: column; /* Stack category, priority, and due date vertically */
+    }
+    
+    .task-item {
+        flex-wrap: wrap; /* Allow elements within task item to wrap */
+    }
+    
+    .task-due-date {
+        margin-left: 0; /* Remove auto margin to align with other elements */
+        width: 100%; /* Make due date take full width */
+        text-align: right; /* Align due date to the right */
+        order: 1; /* Change order to appear below main content on wrap */
+    }
+
+    .task-actions {
+        order: 2; /* Put actions after due date on wrap */
+    }
+
+    .task-checkbox, .task-text {
+        order: 0; /* Keep checkbox and text at the beginning */
+    }
+
+    .task-category, .task-priority {
+        order: 1; /* Keep category and priority next to each other */
+    }
+}
+
+/* Styles for screens up to 480px (e.g., mobile phones) */
+@media (max-width: 480px) {
+    .task-filter {
+        flex-direction: column; /* Stack filter buttons vertically */
+    }
+    
+    .filter-btn {
+        width: 100%; /* Make filter buttons take full width */
+    }
+}
+
+/* Print Stylesheet */
+/* Styles applied when the page is printed */
+@media print {
+    /* Hide elements not relevant for printing */
+    .theme-toggle, .task-actions, .drag-drop-placeholder, .task-input-section, .task-filter, .task-stats {
+        display: none;
+    }
+    
+    /* Ensure task list appears as a standard list */
+    .task-list {
+        list-style-type: disc; /* Use traditional disc bullet points */
+        padding-left: 1.5rem;
+    }
+    
+    /* Optimize task items for printing */
+    .task-item {
+        page-break-inside: avoid; /* Prevents task items from being split across pages */
+        border: 1px solid #ddd; /* Add a light border for separation */
+        box-shadow: none; /* Remove shadows */
+        margin-bottom: 0.5rem; /* Add some space between printed tasks */
+        display: block; /* Change to block layout for simpler print flow */
+        padding: 0.5rem;
+    }
+
+    .task-item .task-checkbox {
+        display: inline-block; /* Keep checkbox inline */
+        margin-right: 0.5rem;
+    }
+
+    .task-item .task-text {
+        display: inline; /* Keep text inline with checkbox */
+        color: black; /* Ensure text is black for print */
+    }
+
+    .task-item.completed .task-text {
+        color: #555; /* Slightly lighter black for completed */
+        text-decoration: line-through;
+    }
+
+    .task-category, .task-priority, .task-due-date {
+        display: block; /* Stack other elements for clarity in print */
+        font-size: 0.8em;
+        color: #777;
+    }
+}
