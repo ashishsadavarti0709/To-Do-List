@@ -1,7 +1,5 @@
 # To-Do List Web Application
 
-![To-Do List Screenshot Placeholder](https://placehold.co/800x450/e0e0e0/333333?text=Advanced+To-Do+List+Preview)
-
 A sleek, intuitive, and highly functional To-Do List application designed to help you organize your tasks efficiently. Built using vanilla HTML, CSS, and JavaScript, this project demonstrates modern web development practices including responsive design, local storage persistence, and interactive UI/UX.
 
 ## 🚀 Features
